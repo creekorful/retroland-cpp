@@ -5,11 +5,12 @@ TileMap::TileMap(const sf::Vector2i &mapSize, const sf::Vector2i &screenSize,
 {
     int tileWidth = screenSize.x / mapSize.x;
     int tileHeight = screenSize.y / mapSize.y;
+    int blockSize = tileWidth > tileHeight ? tileWidth : tileHeight;
 
     for (int x = 0; x < mapSize.x; x++) {
         for (int y = 0; y < mapSize.y; y++) {
-            sf::RectangleShape shape(sf::Vector2f(tileWidth, tileHeight));
-            shape.setPosition(x * tileWidth, y * tileHeight);
+            sf::RectangleShape shape(sf::Vector2f(blockSize, blockSize));
+            shape.setPosition(x * blockSize, y * blockSize);
             shape.setFillColor(sf::Color::Red);
             shape.setOutlineColor(sf::Color::Black);
             shape.setOutlineThickness(1.0f);

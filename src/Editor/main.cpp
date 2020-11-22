@@ -7,7 +7,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Retroland Editor");
 
-    TileMap tileMap(sf::Vector2i(10, 10), sf::Vector2i(1920, 1080), std::map<int, sf::Texture>());
+    TileMap tileMap(sf::Vector2i(30, 20), sf::Vector2i(1920, 1080), std::map<int, sf::Texture>());
 
     while (window.isOpen()) {
         sf::Event event{};
