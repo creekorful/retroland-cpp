@@ -29,17 +29,13 @@ TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
                 m_tileDrawables[layer][index].setPosition(x * m_tileSize, y * m_tileSize);
                 m_tileDrawables[layer][index].setPosition(x * m_tileSize, y * m_tileSize);
 
+                // Layer 0 has the grid pattern
                 if (layer == 0) {
                     m_tileDrawables[layer][index].setOutlineColor(sf::Color::Black);
                     m_tileDrawables[layer][index].setOutlineThickness(1.0f);
                 }
 
-                if (m_tileIds[layer][index] != 0) {
-                    m_tileDrawables[layer][index].setTexture(&m_textures.at(m_tileIds[layer][index]));
-                } else {
-                    m_tileDrawables[layer][index].setTexture(nullptr);
-                    m_tileDrawables[layer][index].setFillColor(sf::Color::Transparent);
-                }
+                setTile(sf::Vector2i(x, y), layer, m_tileIds[layer][index]);
             }
         }
     }
@@ -47,22 +43,31 @@ TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
 
 void TileMap::setBackgroundTile(const sf::Vector2i &pos, int tileId)
 {
-    int index = pos.x * m_size.y + pos.y;
-    m_tileDrawables[0][index].setTexture(&m_textures.at(tileId));
-    m_tileIds[0][index] = tileId;
+    setTile(pos, 0, tileId);
 
     // Reset foreground tile
-    m_tileDrawables[1][index].setTexture(nullptr);
-    m_tileDrawables[1][index].setFillColor(sf::Color::Transparent);
-    m_tileIds[1][index] = 0;
+    setForegroundTile(pos, 0);
 }
 
 void TileMap::setForegroundTile(const sf::Vector2i &pos, int tileId)
 {
+    setTile(pos, 1, tileId);
+}
+
+void TileMap::setTile(const sf::Vector2i &pos, int layer, int tileId)
+{
     int index = pos.x * m_size.y + pos.y;
-    m_tileDrawables[1][index].setTexture(&m_textures.at(tileId));
-    m_tileDrawables[1][index].setFillColor(sf::Color::White);
-    m_tileIds[1][index] = tileId;
+
+    // TileId 0 = nothing
+    if (tileId == 0) {
+        m_tileDrawables[layer][index].setTexture(nullptr);
+        m_tileDrawables[layer][index].setFillColor(sf::Color::Transparent);
+    } else {
+        m_tileDrawables[layer][index].setTexture(&m_textures.at(tileId));
+        m_tileDrawables[layer][index].setFillColor(sf::Color::White);
+    }
+
+    m_tileIds[layer][index] = tileId;
 }
 
 sf::Vector2i TileMap::getTilePosition(const sf::Vector2i &screenPosition) const
@@ -108,12 +113,10 @@ bool TileMap::save(std::ofstream &file)
 
 void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    for (const auto &backgroundTile : m_tileDrawables.at(0)) {
-        target.draw(backgroundTile, states);
-    }
-
-    for (const auto &foregroundTile : m_tileDrawables.at(1)) {
-        target.draw(foregroundTile, states);
+    for (int layer = 0; layer < 2; layer++) {
+        for (const auto &tile : m_tileDrawables.at(layer)) {
+            target.draw(tile, states);
+        }
     }
 }
 
