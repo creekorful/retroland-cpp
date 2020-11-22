@@ -32,19 +32,22 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Get video mode to use
+    sf::VideoMode videoMode = sf::VideoMode::getFullscreenModes()[0];
+
     // Either create a new tilemap or load from file
     TileMap tileMap;
     if (argc == 1) {
-        tileMap = TileMap(sf::Vector2i(30, 20), sf::Vector2i(1920, 1080), textures);
+        tileMap = TileMap(sf::Vector2i(30, 20), sf::Vector2i(videoMode.width, videoMode.height), textures);
     } else {
         std::ifstream saveFile(argv[1]);
         if (saveFile.is_open())
-            tileMap = TileMap::load(saveFile, sf::Vector2i(1920, 1080), textures);
+            tileMap = TileMap::load(saveFile, sf::Vector2i(videoMode.width, videoMode.height), textures);
         else
             return 1;
     }
 
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Retroland Editor");
+    sf::RenderWindow window(videoMode, "Retroland Editor", sf::Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
 
     while (window.isOpen()) {
@@ -55,9 +58,10 @@ int main(int argc, char *argv[])
                 window.close();
             }
 
-            // Change current tile
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
+                    case sf::Keyboard::Escape:
+                        window.close();
                     case sf::Keyboard::Num1:
                         currentTileId = 1;
                         isBackground = true;
