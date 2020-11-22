@@ -15,6 +15,8 @@ std::map<int, sf::Texture> loadTextures()
         return std::map<int, sf::Texture>();
     if (!textures[4].loadFromFile("assets/trees.png", sf::IntRect(16, 0, 16, 16)))
         return std::map<int, sf::Texture>();
+    if (!textures[5].loadFromFile("assets/grass.png", sf::IntRect(0, 0, 16, 16)))
+        return std::map<int, sf::Texture>();
 
     return textures;
 }
@@ -72,6 +74,9 @@ int main(int argc, char *argv[])
                         currentTileId = 4;
                         isBackground = false;
                         break;
+                    case sf::Keyboard::Num5:
+                        currentTileId = 5;
+                        isBackground = true;
                     default:
                         break;
                 }
