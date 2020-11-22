@@ -9,14 +9,26 @@ Inventory::Inventory(const sf::Vector2i &screenSize, const std::map<int, sf::Tex
 
     // Create items
     int i = 0;
-    for (const auto&[id, texture] : textures) {
+    for (const auto&[textureId, texture] : textures) {
         sf::RectangleShape item(sf::Vector2f(150, 150));
         item.setPosition(m_background.getPosition().x + 100 + (i * 150 * 2), m_background.getPosition().y + 100);
         item.setFillColor(sf::Color::White);
         item.setTexture(&texture);
         m_items.push_back(item);
+        m_tiles[i] = textureId;
         i++;
     }
+}
+
+int Inventory::getTileId(const sf::Vector2f &worldPos)
+{
+    for (int i = 0; i < m_items.size(); i++) {
+        if (m_items[i].getGlobalBounds().contains(worldPos)) {
+            return m_tiles[i];
+        }
+    }
+
+    return -1;
 }
 
 void Inventory::draw(sf::RenderTarget &target, sf::RenderStates states) const

@@ -22,6 +22,11 @@ std::map<int, sf::Texture> loadTextures()
     return textures;
 }
 
+bool isBackgroundTile(int tileId)
+{
+    return tileId == 1 || tileId == 2 || tileId == 5;
+}
+
 int main(int argc, char *argv[])
 {
     bool isBackground = true, showInventory = false;
@@ -72,56 +77,43 @@ int main(int argc, char *argv[])
                 switch (event.key.code) {
                     case sf::Keyboard::Escape:
                         window.close();
-                    case sf::Keyboard::Num1:
-                        currentTileId = 1;
-                        isBackground = true;
-                        break;
-                    case sf::Keyboard::Num2:
-                        currentTileId = 2;
-                        isBackground = true;
-                        break;
-                    case sf::Keyboard::Num3:
-                        currentTileId = 3;
-                        isBackground = false;
-                        break;
-                    case sf::Keyboard::Num4:
-                        currentTileId = 4;
-                        isBackground = false;
-                        break;
-                    case sf::Keyboard::Num5:
-                        currentTileId = 5;
-                        isBackground = true;
-                        break;
                     case sf::Keyboard::X:
                         tileMap.toggleGrid();
                         break;
                     case sf::Keyboard::E:
                         showInventory = !showInventory;
                         break;
+                        // Save system
+                    case sf::Keyboard::S:
+                        if (event.key.control) {
+                            std::ofstream saveFile("save.dat");
+                            if (saveFile.is_open()) {
+                                tileMap.save(saveFile);
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
-                currentTileIndicator.setTexture(&textures[currentTileId]);
             }
 
-            // Place tile
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-                sf::Vector2i tilePos = tileMap.getTilePosition(worldPos);
-
-                if (isBackground)
-                    tileMap.setBackgroundTile(tilePos, currentTileId);
-                else
-                    tileMap.setForegroundTile(tilePos, currentTileId);
-            }
-
-            // Save
-            if (event.type == sf::Event::KeyPressed) {
-                if (event.key.code == sf::Keyboard::S && event.key.control) {
-                    std::ofstream saveFile("save.dat");
-                    if (saveFile.is_open()) {
-                        tileMap.save(saveFile);
+                if (showInventory) {
+                    int tileId = inventory.getTileId(worldPos);
+                    if (tileId != -1) {
+                        currentTileId = tileId;
+                        isBackground = isBackgroundTile(currentTileId);
+                        currentTileIndicator.setTexture(&textures[currentTileId]);
+                        showInventory = false;
                     }
+                } else {
+                    sf::Vector2i tilePos = tileMap.getTilePosition(worldPos);
+
+                    if (isBackground)
+                        tileMap.setBackgroundTile(tilePos, currentTileId);
+                    else
+                        tileMap.setForegroundTile(tilePos, currentTileId);
                 }
             }
         }
