@@ -1,10 +1,15 @@
 cmake_minimum_required(VERSION 3.17)
-project(retroland)
+project(Retroland)
 
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 
-add_executable(retroland src/main.cpp)
+add_executable(Retroland_Editor src/Editor/main.cpp
+        src/TileMap/TileMap.cpp src/TileMap/TileMap.h)
 
-target_link_libraries(retroland sfml-graphics sfml-window sfml-system)
+add_executable(Retroland src/Game/main.cpp
+        src/TileMap/TileMap.cpp src/TileMap/TileMap.h)
+
+target_link_libraries(Retroland_Editor sfml-graphics sfml-window sfml-system)
+target_link_libraries(Retroland sfml-graphics sfml-window sfml-system)
