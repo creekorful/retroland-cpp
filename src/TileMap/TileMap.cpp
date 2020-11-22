@@ -1,27 +1,39 @@
 #include "TileMap.h"
 
-TileMap::TileMap(const sf::Vector2i &mapSize, const sf::Vector2i &screenSize,
-                 const std::map<int, sf::Texture> &textures)
-        : m_textures(textures)
+TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
+                 std::map<int, sf::Texture> &textures)
+        : m_textures(std::move(textures)), m_size(size)
 {
-    int tileWidth = screenSize.x / mapSize.x;
-    int tileHeight = screenSize.y / mapSize.y;
-    int blockSize = tileWidth > tileHeight ? tileWidth : tileHeight;
+    int tileWidth = screenSize.x / size.x;
+    int tileHeight = screenSize.y / size.y;
+    m_blockSize = tileWidth > tileHeight ? tileWidth : tileHeight;
 
-    m_backgroundTiles.resize(mapSize.x * mapSize.y);
-    m_foregroundTiles.resize(mapSize.x * mapSize.y);
+    m_backgroundTiles.resize(size.x * size.y);
+    m_foregroundTiles.resize(size.x * size.y);
 
-    for (int x = 0; x < mapSize.x; x++) {
-        for (int y = 0; y < mapSize.y; y++) {
-            sf::RectangleShape tile(sf::Vector2f(blockSize, blockSize));
-            tile.setPosition(x * blockSize, y * blockSize);
-            tile.setOutlineColor(sf::Color::Black);
-            tile.setOutlineThickness(1.0f);
-            tile.setTexture(&m_textures[0]);
+    for (int x = 0; x < size.x; x++) {
+        for (int y = 0; y < size.y; y++) {
+            int index = x * m_size.y + y;
 
-            m_backgroundTiles.push_back(tile);
+            m_backgroundTiles[index] = sf::RectangleShape(sf::Vector2f(m_blockSize, m_blockSize));
+            m_backgroundTiles[index].setPosition(x * m_blockSize, y * m_blockSize);
+            m_backgroundTiles[index].setOutlineColor(sf::Color::Black);
+            m_backgroundTiles[index].setOutlineThickness(1.0f);
+            m_backgroundTiles[index].setTexture(&m_textures.at(0));
+            m_backgroundTiles[index].setPosition(x * m_blockSize, y * m_blockSize);
         }
     }
+}
+
+void TileMap::setBackgroundTile(const sf::Vector2i &pos, int tileId)
+{
+    int index = pos.x * m_size.y + pos.y;
+    m_backgroundTiles[index].setTexture(&m_textures.at(tileId));
+}
+
+sf::Vector2i TileMap::getBlockPosition(const sf::Vector2i &screenPosition) const
+{
+    return screenPosition / m_blockSize;
 }
 
 void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
