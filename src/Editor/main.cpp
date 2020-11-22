@@ -2,6 +2,7 @@
 #include <map>
 
 #include "../TileMap/TileMap.h"
+#include "Inventory.h"
 
 std::map<int, sf::Texture> loadTextures()
 {
@@ -23,7 +24,7 @@ std::map<int, sf::Texture> loadTextures()
 
 int main(int argc, char *argv[])
 {
-    bool isBackground = true;
+    bool isBackground = true, showInventory = false;
     int currentTileId = 1;
 
     // Load textures
@@ -54,7 +55,9 @@ int main(int argc, char *argv[])
     currentTileIndicator.setOutlineThickness(4.f);
     currentTileIndicator.setTexture(&textures[currentTileId]);
 
-    sf::RenderWindow window(videoMode, "Retroland Editor", sf::Style::Fullscreen);
+    Inventory inventory(sf::Vector2i(videoMode.width, videoMode.height), textures);
+
+    sf::RenderWindow window(videoMode, "Retroland Editor");
     window.setVerticalSyncEnabled(true);
 
     while (window.isOpen()) {
@@ -88,8 +91,13 @@ int main(int argc, char *argv[])
                     case sf::Keyboard::Num5:
                         currentTileId = 5;
                         isBackground = true;
+                        break;
                     case sf::Keyboard::X:
                         tileMap.toggleGrid();
+                        break;
+                    case sf::Keyboard::E:
+                        showInventory = !showInventory;
+                        break;
                     default:
                         break;
                 }
@@ -121,6 +129,11 @@ int main(int argc, char *argv[])
         window.clear(sf::Color::Black);
         window.draw(tileMap);
         window.draw(currentTileIndicator);
+
+        if (showInventory) {
+            window.draw(inventory);
+        }
+
         window.display();
     }
 

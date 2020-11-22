@@ -14,7 +14,7 @@ public:
     // TODO: do not use copy constructor for textures?
     TileMap(const sf::Vector2i &size,
             const sf::Vector2i &screenSize,
-            std::map<int, sf::Texture> &textures,
+            const std::map<int, sf::Texture> &textures,
             std::map<int, std::vector<int>> tileIds = std::map<int, std::vector<int>>());
 
     void setBackgroundTile(const sf::Vector2i &pos, int tileId);
