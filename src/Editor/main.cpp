@@ -18,6 +18,12 @@ std::map<int, sf::Texture> loadTextures()
         return std::map<int, sf::Texture>();
     if (!textures[5].loadFromFile("assets/grass.png", sf::IntRect(0, 0, 16, 16)))
         return std::map<int, sf::Texture>();
+    if (!textures[6].loadFromFile("assets/towers.png", sf::IntRect(16, 16, 16, 16)))
+        return std::map<int, sf::Texture>();
+    if (!textures[7].loadFromFile("assets/towers.png", sf::IntRect(16, 32, 16, 16)))
+        return std::map<int, sf::Texture>();
+    if (!textures[8].loadFromFile("assets/towers.png", sf::IntRect(0, 32, 16, 16)))
+        return std::map<int, sf::Texture>();
 
     return textures;
 }
