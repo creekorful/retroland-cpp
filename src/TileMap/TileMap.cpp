@@ -4,7 +4,7 @@ TileMap::TileMap() = default;
 
 TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
                  std::map<int, sf::Texture> &textures, std::map<int, std::vector<int>> tileIds)
-        : m_textures(std::move(textures)), m_size(size)
+        : m_textures(textures), m_size(size)
 {
     int tileWidth = screenSize.x / size.x;
     int tileHeight = screenSize.y / size.y;

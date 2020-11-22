@@ -47,6 +47,13 @@ int main(int argc, char *argv[])
             return 1;
     }
 
+    // Little GUI (current tile indicator)
+    sf::RectangleShape currentTileIndicator(sf::Vector2f(200, 200));
+    currentTileIndicator.setPosition(100, videoMode.height - 100 - currentTileIndicator.getSize().y);
+    currentTileIndicator.setOutlineColor(sf::Color::Black);
+    currentTileIndicator.setOutlineThickness(4.f);
+    currentTileIndicator.setTexture(&textures[currentTileId]);
+
     sf::RenderWindow window(videoMode, "Retroland Editor", sf::Style::Fullscreen);
     window.setVerticalSyncEnabled(true);
 
@@ -84,6 +91,7 @@ int main(int argc, char *argv[])
                     default:
                         break;
                 }
+                currentTileIndicator.setTexture(&textures[currentTileId]);
             }
 
             // Place tile
@@ -110,6 +118,7 @@ int main(int argc, char *argv[])
 
         window.clear(sf::Color::Black);
         window.draw(tileMap);
+        window.draw(currentTileIndicator);
         window.display();
     }
 

@@ -11,6 +11,7 @@ public:
     TileMap();
 
     // Create a blank TileMap
+    // TODO: do not use copy constructor for textures?
     TileMap(const sf::Vector2i &size,
             const sf::Vector2i &screenSize,
             std::map<int, sf::Texture> &textures,
