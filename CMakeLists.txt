@@ -3,4 +3,4 @@ project(retroland)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(retroland main.cpp)
+add_executable(retroland src/main.cpp)
