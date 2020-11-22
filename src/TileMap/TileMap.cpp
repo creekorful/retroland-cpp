@@ -9,7 +9,6 @@ TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
     m_blockSize = tileWidth > tileHeight ? tileWidth : tileHeight;
 
     m_backgroundTiles.resize(size.x * size.y);
-    m_foregroundTiles.resize(size.x * size.y);
 
     for (int x = 0; x < size.x; x++) {
         for (int y = 0; y < size.y; y++) {

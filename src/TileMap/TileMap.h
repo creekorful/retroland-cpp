@@ -24,7 +24,6 @@ private:
     sf::Vector2i m_size;
     std::map<int, sf::Texture> m_textures;
     std::vector<sf::RectangleShape> m_backgroundTiles;
-    std::vector<sf::RectangleShape> m_foregroundTiles;
 };
 
 
