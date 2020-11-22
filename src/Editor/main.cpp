@@ -25,6 +25,11 @@ std::map<int, sf::Texture> loadTextures()
     if (!textures[8].loadFromFile("assets/towers.png", sf::IntRect(0, 32, 16, 16)))
         return std::map<int, sf::Texture>();
 
+    if (!textures[9].loadFromFile("assets/houses.png", sf::IntRect(16, 48, 16, 16)))
+        return std::map<int, sf::Texture>();
+    if (!textures[10].loadFromFile("assets/houses.png", sf::IntRect(32, 48, 16, 16)))
+        return std::map<int, sf::Texture>();
+
     return textures;
 }
 

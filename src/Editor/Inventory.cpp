@@ -8,14 +8,24 @@ Inventory::Inventory(const sf::Vector2i &screenSize, const std::map<int, sf::Tex
     m_background.setFillColor(sf::Color(52, 73, 94, 240));
 
     // Create items
-    int i = 0;
+    int x = 0, y = 0, i = 0;
     for (const auto&[textureId, texture] : textures) {
         sf::RectangleShape item(sf::Vector2f(150, 150));
-        item.setPosition(m_background.getPosition().x + 100 + (i * 150 * 2), m_background.getPosition().y + 100);
+
+        // Line return if x is > than background width
+        if (100 + (x * 150 * 2) + item.getSize().x > m_background.getSize().x) {
+            x = 0;
+            y++;
+        }
+
+        sf::Vector2f itemPos(m_background.getPosition().x + 100 + (x * 150 * 2),
+                             m_background.getPosition().y + 100 + (y * 150 * 2));
+        item.setPosition(itemPos);
         item.setFillColor(sf::Color::White);
         item.setTexture(&texture);
         m_items.push_back(item);
         m_tiles[i] = textureId;
+        x++;
         i++;
     }
 }
