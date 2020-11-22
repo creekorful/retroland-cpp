@@ -18,7 +18,7 @@ std::map<int, sf::Texture> loadTextures()
     return textures;
 }
 
-int main()
+int main(int argc, char *argv[])
 {
     // Load textures
     std::map<int, sf::Texture> textures = loadTextures();
@@ -28,6 +28,8 @@ int main()
     TileMap tileMap(sf::Vector2i(30, 20), sf::Vector2i(1920, 1080), textures);
 
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Retroland Editor");
+    window.setVerticalSyncEnabled(true);
+
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
