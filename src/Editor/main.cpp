@@ -20,6 +20,8 @@ std::map<int, sf::Texture> loadTextures()
 
 int main(int argc, char *argv[])
 {
+    int currentTileId = 0;
+
     // Load textures
     std::map<int, sf::Texture> textures = loadTextures();
     if (textures.empty()) {
@@ -49,10 +51,24 @@ int main(int argc, char *argv[])
                 window.close();
             }
 
+            // Change current tile
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::Num1:
+                        currentTileId = 0;
+                        break;
+                    case sf::Keyboard::Num2:
+                        currentTileId = 1;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             // Place tile
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 sf::Vector2i tilePos = tileMap.getTilePosition(sf::Mouse::getPosition(window));
-                tileMap.setBackgroundTile(tilePos, 1);
+                tileMap.setBackgroundTile(tilePos, currentTileId);
             }
 
             // Save
