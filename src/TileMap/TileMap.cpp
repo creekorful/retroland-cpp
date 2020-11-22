@@ -70,9 +70,9 @@ void TileMap::setTile(const sf::Vector2i &pos, int layer, int tileId)
     m_tileIds[layer][index] = tileId;
 }
 
-sf::Vector2i TileMap::getTilePosition(const sf::Vector2i &screenPosition) const
+sf::Vector2i TileMap::getTilePosition(const sf::Vector2f &worldPos) const
 {
-    return screenPosition / m_tileSize;
+    return sf::Vector2i(worldPos.x / m_tileSize, worldPos.y / m_tileSize);
 }
 
 TileMap TileMap::load(std::ifstream &file, const sf::Vector2i &screenSize, std::map<int, sf::Texture> &textures)

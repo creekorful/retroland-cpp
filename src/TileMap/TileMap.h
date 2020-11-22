@@ -22,7 +22,7 @@ public:
 
     void setTile(const sf::Vector2i &pos, int layer, int tileId);
 
-    sf::Vector2i getTilePosition(const sf::Vector2i &screenPosition) const;
+    sf::Vector2i getTilePosition(const sf::Vector2f &worldPos) const;
 
     static TileMap load(std::ifstream &file, const sf::Vector2i &screenSize, std::map<int, sf::Texture> &textures);
 

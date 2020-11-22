@@ -84,7 +84,8 @@ int main(int argc, char *argv[])
 
             // Place tile
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                sf::Vector2i tilePos = tileMap.getTilePosition(sf::Mouse::getPosition(window));
+                sf::Vector2f worldPos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                sf::Vector2i tilePos = tileMap.getTilePosition(worldPos);
 
                 if (isBackground)
                     tileMap.setBackgroundTile(tilePos, currentTileId);
