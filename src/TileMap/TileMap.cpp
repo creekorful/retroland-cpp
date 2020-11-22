@@ -2,20 +2,24 @@
 
 TileMap::TileMap(const sf::Vector2i &mapSize, const sf::Vector2i &screenSize,
                  const std::map<int, sf::Texture> &textures)
+        : m_textures(textures)
 {
     int tileWidth = screenSize.x / mapSize.x;
     int tileHeight = screenSize.y / mapSize.y;
     int blockSize = tileWidth > tileHeight ? tileWidth : tileHeight;
 
+    m_backgroundTiles.resize(mapSize.x * mapSize.y);
+    m_foregroundTiles.resize(mapSize.x * mapSize.y);
+
     for (int x = 0; x < mapSize.x; x++) {
         for (int y = 0; y < mapSize.y; y++) {
-            sf::RectangleShape shape(sf::Vector2f(blockSize, blockSize));
-            shape.setPosition(x * blockSize, y * blockSize);
-            shape.setFillColor(sf::Color::Red);
-            shape.setOutlineColor(sf::Color::Black);
-            shape.setOutlineThickness(1.0f);
+            sf::RectangleShape tile(sf::Vector2f(blockSize, blockSize));
+            tile.setPosition(x * blockSize, y * blockSize);
+            tile.setOutlineColor(sf::Color::Black);
+            tile.setOutlineThickness(1.0f);
+            tile.setTexture(&m_textures[0]);
 
-            m_backgroundTiles.push_back(shape);
+            m_backgroundTiles.push_back(tile);
         }
     }
 }
