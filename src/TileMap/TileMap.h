@@ -2,16 +2,22 @@
 #define RETROLAND_TILEMAP_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 class TileMap : public sf::Drawable
 {
 public:
-    TileMap(sf::Vector2i size);
+    // Create a blank TileMap
+    TileMap(const sf::Vector2i &mapSize,
+            const sf::Vector2i &screenSize,
+            const std::map<int, sf::Texture> &textures);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
+    std::vector<sf::RectangleShape> m_backgroundTiles;
+    std::vector<sf::RectangleShape> m_foregroundTiles;
 };
 
 
