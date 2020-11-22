@@ -3,27 +3,39 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <fstream>
 
 class TileMap : public sf::Drawable
 {
 public:
+    TileMap();
+
     // Create a blank TileMap
     TileMap(const sf::Vector2i &size,
             const sf::Vector2i &screenSize,
-            std::map<int, sf::Texture> &textures);
+            std::map<int, sf::Texture> &textures,
+            std::vector<int> tileIds = std::vector<int>());
 
     void setBackgroundTile(const sf::Vector2i &pos, int tileId);
 
-    sf::Vector2i getBlockPosition(const sf::Vector2i &screenPosition) const;
+    sf::Vector2i getTilePosition(const sf::Vector2i &screenPosition) const;
+
+    static TileMap load(std::ifstream &file, const sf::Vector2i &screenSize, std::map<int, sf::Texture> &textures);
+
+    bool save(std::ofstream &file);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
-    int m_blockSize;
+    // Internal state
     sf::Vector2i m_size;
+    std::vector<int> m_tileIds;
+
+    // Rendering
+    int m_tileSize;
     std::map<int, sf::Texture> m_textures;
-    std::vector<sf::RectangleShape> m_backgroundTiles;
+    std::vector<sf::RectangleShape> m_tileDrawables;
 };
 
 
