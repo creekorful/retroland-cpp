@@ -88,6 +88,8 @@ int main(int argc, char *argv[])
                     case sf::Keyboard::Num5:
                         currentTileId = 5;
                         isBackground = true;
+                    case sf::Keyboard::X:
+                        tileMap.toggleGrid();
                     default:
                         break;
                 }

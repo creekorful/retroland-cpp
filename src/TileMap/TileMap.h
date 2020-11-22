@@ -23,6 +23,8 @@ public:
 
     void setTile(const sf::Vector2i &pos, int layer, int tileId);
 
+    void toggleGrid();
+
     sf::Vector2i getTilePosition(const sf::Vector2f &worldPos) const;
 
     static TileMap load(std::ifstream &file, const sf::Vector2i &screenSize, std::map<int, sf::Texture> &textures);
@@ -38,6 +40,7 @@ private:
     std::map<int, std::vector<int>> m_tileIds;
 
     // Rendering
+    bool m_showGrid;
     int m_tileSize;
     std::map<int, sf::Texture> m_textures;
     std::map<int, std::vector<sf::RectangleShape>> m_tileDrawables;
