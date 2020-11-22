@@ -14,9 +14,11 @@ public:
     TileMap(const sf::Vector2i &size,
             const sf::Vector2i &screenSize,
             std::map<int, sf::Texture> &textures,
-            std::vector<int> tileIds = std::vector<int>());
+            std::map<int, std::vector<int>> tileIds = std::map<int, std::vector<int>>());
 
     void setBackgroundTile(const sf::Vector2i &pos, int tileId);
+
+    void setForegroundTile(const sf::Vector2i &pos, int tileId);
 
     sf::Vector2i getTilePosition(const sf::Vector2i &screenPosition) const;
 
@@ -30,12 +32,12 @@ protected:
 private:
     // Internal state
     sf::Vector2i m_size;
-    std::vector<int> m_tileIds;
+    std::map<int, std::vector<int>> m_tileIds;
 
     // Rendering
     int m_tileSize;
     std::map<int, sf::Texture> m_textures;
-    std::vector<sf::RectangleShape> m_tileDrawables;
+    std::map<int, std::vector<sf::RectangleShape>> m_tileDrawables;
 };
 
 

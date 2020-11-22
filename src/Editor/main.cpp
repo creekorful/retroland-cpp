@@ -7,20 +7,22 @@ std::map<int, sf::Texture> loadTextures()
 {
     std::map<int, sf::Texture> textures;
 
-    if (!textures[0].loadFromFile("assets/grass.png", sf::IntRect(32, 0, 16, 16))) {
+    if (!textures[1].loadFromFile("assets/grass.png", sf::IntRect(32, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    }
-
-    if (!textures[1].loadFromFile("assets/grass.png", sf::IntRect(48, 0, 16, 16))) {
+    if (!textures[2].loadFromFile("assets/grass.png", sf::IntRect(48, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    }
+    if (!textures[3].loadFromFile("assets/houses.png", sf::IntRect(0, 48, 16, 16)))
+        return std::map<int, sf::Texture>();
+    if (!textures[4].loadFromFile("assets/trees.png", sf::IntRect(16, 0, 16, 16)))
+        return std::map<int, sf::Texture>();
 
     return textures;
 }
 
 int main(int argc, char *argv[])
 {
-    int currentTileId = 0;
+    bool isBackground = true;
+    int currentTileId = 1;
 
     // Load textures
     std::map<int, sf::Texture> textures = loadTextures();
@@ -55,10 +57,20 @@ int main(int argc, char *argv[])
             if (event.type == sf::Event::KeyPressed) {
                 switch (event.key.code) {
                     case sf::Keyboard::Num1:
-                        currentTileId = 0;
+                        currentTileId = 1;
+                        isBackground = true;
                         break;
                     case sf::Keyboard::Num2:
-                        currentTileId = 1;
+                        currentTileId = 2;
+                        isBackground = true;
+                        break;
+                    case sf::Keyboard::Num3:
+                        currentTileId = 3;
+                        isBackground = false;
+                        break;
+                    case sf::Keyboard::Num4:
+                        currentTileId = 4;
+                        isBackground = false;
                         break;
                     default:
                         break;
@@ -68,7 +80,11 @@ int main(int argc, char *argv[])
             // Place tile
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 sf::Vector2i tilePos = tileMap.getTilePosition(sf::Mouse::getPosition(window));
-                tileMap.setBackgroundTile(tilePos, currentTileId);
+
+                if (isBackground)
+                    tileMap.setBackgroundTile(tilePos, currentTileId);
+                else
+                    tileMap.setForegroundTile(tilePos, currentTileId);
             }
 
             // Save
