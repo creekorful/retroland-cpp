@@ -3,8 +3,8 @@
 TileMap::TileMap() = default;
 
 TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
-                 std::map<int, sf::Texture> &textures, std::map<int, std::vector<int>> tileIds)
-        : m_textures(std::move(textures)), m_size(size)
+                 const std::map<int, sf::Texture> &textures, std::map<int, std::vector<int>> tileIds)
+        : m_textures(textures), m_size(size)
 {
     int tileWidth = screenSize.x / size.x;
     int tileHeight = screenSize.y / size.y;
@@ -28,17 +28,12 @@ TileMap::TileMap(const sf::Vector2i &size, const sf::Vector2i &screenSize,
                 m_tileDrawables[layer][index] = sf::RectangleShape(sf::Vector2f(m_tileSize, m_tileSize));
                 m_tileDrawables[layer][index].setPosition(x * m_tileSize, y * m_tileSize);
                 m_tileDrawables[layer][index].setPosition(x * m_tileSize, y * m_tileSize);
-
-                // Layer 0 has the grid pattern
-                if (layer == 0) {
-                    m_tileDrawables[layer][index].setOutlineColor(sf::Color::Black);
-                    m_tileDrawables[layer][index].setOutlineThickness(1.0f);
-                }
-
                 setTile(sf::Vector2i(x, y), layer, m_tileIds[layer][index]);
             }
         }
     }
+
+    toggleGrid();
 }
 
 void TileMap::setBackgroundTile(const sf::Vector2i &pos, int tileId)
@@ -68,6 +63,21 @@ void TileMap::setTile(const sf::Vector2i &pos, int layer, int tileId)
     }
 
     m_tileIds[layer][index] = tileId;
+}
+
+void TileMap::toggleGrid()
+{
+    m_showGrid = !m_showGrid;
+    if (m_showGrid) {
+        for (sf::RectangleShape &tile : m_tileDrawables[0]) {
+            tile.setOutlineColor(sf::Color::Black);
+            tile.setOutlineThickness(1.0f);
+        }
+    } else {
+        for (sf::RectangleShape &tile : m_tileDrawables[0]) {
+            tile.setOutlineThickness(0.f);
+        }
+    }
 }
 
 sf::Vector2i TileMap::getTilePosition(const sf::Vector2f &worldPos) const
