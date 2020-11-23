@@ -31,22 +31,9 @@ public:
 
     sf::Vector2i size() const;
 
-    // Networking support
-    sf::Packet &operator<<(sf::Packet &packet) const
-    {
-        // First of all map size
-        packet << sf::Uint32(m_size.x) << sf::Uint32(m_size.y);
+    friend sf::Packet &operator<<(sf::Packet &packet, const TileMap &tileMap);
 
-        return packet;
-    }
-
-    sf::Packet &operator>>(sf::Packet &packet)
-    {
-        // First of all map size
-        packet >> m_size.x >> m_size.y;
-
-        return packet;
-    }
+    friend sf::Packet &operator>>(sf::Packet &packet, TileMap &tileMap);
 
 private:
     sf::Vector2i m_size;

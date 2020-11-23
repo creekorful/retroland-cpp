@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
     }
     std::cout << "new client connected" << std::endl;
 
-    TileMap tileMap();
+    TileMap tileMap(sf::Vector2i(10, 10));
 
     sf::Packet packet;
-    packet << msg;
+    packet << tileMap;
 
     if (client.send(packet) != sf::Socket::Done) {
         std::cerr << "unable to send message to client" << std::endl;

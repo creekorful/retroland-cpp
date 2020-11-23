@@ -1,6 +1,8 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
+#include "../TileMap/TileMap.h"
+
 int main(int argc, char *argv[])
 {
     sf::TcpSocket socket;
@@ -16,10 +18,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    std::string msg;
-    packet >> msg;
+    TileMap tileMap;
+    packet >> tileMap;
 
-    std::cout << "received " << msg << std::endl;
+    std::cout << "x: " << tileMap.size().x << " y: " << tileMap.size().y << std::endl;
 
     socket.disconnect();
 
