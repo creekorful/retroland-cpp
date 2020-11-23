@@ -44,6 +44,10 @@ std::map<int, sf::Texture> loadTextures()
     if (!textures[62].loadFromFile("assets/towers.png", sf::IntRect(0, 32, 16, 16)))
         return std::map<int, sf::Texture>();
 
+    // Players
+    if (!textures[100].loadFromFile("assets/players/assassin.png", sf::IntRect(0, 0, 16, 16)))
+        return std::map<int, sf::Texture>();
+
     return textures;
 }
 
@@ -86,12 +90,47 @@ int main(int argc, char *argv[])
     sf::RenderWindow window(videoMode, "Retroland Client");
     window.setVerticalSyncEnabled(true);
 
+    sf::Vector2i playerPos;
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
             // Close window
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+
+            if (event.type == sf::Event::KeyPressed) {
+                sf::Vector2i oldPlayerPos = playerPos;
+
+                switch (event.key.code) {
+                    case sf::Keyboard::Z:
+                        playerPos.y--;
+                        break;
+                    case sf::Keyboard::S:
+                        playerPos.y++;
+                        break;
+                    case sf::Keyboard::Q:
+                        playerPos.x--;
+                        break;
+                    case sf::Keyboard::D:
+                        playerPos.x++;
+                        break;
+                    default:
+                        break;
+                }
+
+                // Make sure movement is allowed
+                int tileId = tileMap.getTile(playerPos, 1);
+                if (tileId != 0) {
+                    playerPos = oldPlayerPos; // not allowed
+                }
+
+                // Update player pos if changed
+                if (playerPos != oldPlayerPos) {
+                    tileMap.setForegroundTile(oldPlayerPos, 0);
+                    tileMap.setForegroundTile(playerPos, 100);
+                    tileMapRenderer.update(tileMap);
+                }
             }
         }
 
