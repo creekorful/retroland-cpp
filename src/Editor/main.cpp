@@ -2,6 +2,7 @@
 #include <map>
 
 #include "../TileMap/TileMap.h"
+#include "../TileMap/TileMapRenderer.h"
 #include "Inventory.h"
 
 std::map<int, sf::Texture> loadTextures()
@@ -69,14 +70,19 @@ int main(int argc, char *argv[])
     // Either create a new tilemap or load from file
     TileMap tileMap;
     if (argc == 1) {
-        tileMap = TileMap(sf::Vector2i(30, 20), sf::Vector2i(videoMode.width, videoMode.height), textures);
+        // Create a new tilemap
+        tileMap = TileMap(sf::Vector2i(30, 20));
     } else {
+        // Load tilemap from save
         std::ifstream saveFile(argv[1]);
         if (saveFile.is_open())
-            tileMap = TileMap::load(saveFile, sf::Vector2i(videoMode.width, videoMode.height), textures);
+            tileMap = TileMap(saveFile);
         else
             return 1;
     }
+
+    // Create the tilemap renderer
+    TileMapRenderer tileMapRenderer(tileMap, sf::Vector2i(videoMode.width, videoMode.height), textures);
 
     // Little GUI (current tile indicator)
     sf::RectangleShape currentTileIndicator(sf::Vector2f(200, 200));
@@ -103,7 +109,7 @@ int main(int argc, char *argv[])
                     case sf::Keyboard::Escape:
                         window.close();
                     case sf::Keyboard::X:
-                        tileMap.toggleGrid();
+                        tileMapRenderer.toggleGrid();
                         break;
                     case sf::Keyboard::E:
                         showInventory = !showInventory;
@@ -133,18 +139,21 @@ int main(int argc, char *argv[])
                         showInventory = false;
                     }
                 } else {
-                    sf::Vector2i tilePos = tileMap.getTilePosition(worldPos);
+                    sf::Vector2i tilePos = tileMapRenderer.getTilePosition(worldPos);
 
                     if (isBackground)
                         tileMap.setBackgroundTile(tilePos, currentTileId);
                     else
                         tileMap.setForegroundTile(tilePos, currentTileId);
+
+                    // Update the renderer
+                    tileMapRenderer.update(tileMap);
                 }
             }
         }
 
         window.clear(sf::Color::Black);
-        window.draw(tileMap);
+        window.draw(tileMapRenderer);
         window.draw(currentTileIndicator);
 
         if (showInventory) {

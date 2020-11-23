@@ -1,6 +1,8 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
+#include "../TileMap/TileMap.h"
+
 int main(int argc, char *argv[])
 {
     sf::TcpListener listener;
@@ -18,7 +20,7 @@ int main(int argc, char *argv[])
     }
     std::cout << "new client connected" << std::endl;
 
-    std::string msg = "Hey dude.";
+    TileMap tileMap();
 
     sf::Packet packet;
     packet << msg;
