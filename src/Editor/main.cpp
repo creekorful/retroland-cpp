@@ -8,29 +8,40 @@ std::map<int, sf::Texture> loadTextures()
 {
     std::map<int, sf::Texture> textures;
 
+    // Grass
     if (!textures[1].loadFromFile("assets/grass.png", sf::IntRect(32, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[2].loadFromFile("assets/grass.png", sf::IntRect(48, 0, 16, 16)))
+
+    // Road
+    if (!textures[20].loadFromFile("assets/grass.png", sf::IntRect(48, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[3].loadFromFile("assets/houses.png", sf::IntRect(0, 48, 16, 16)))
+
+    // Water
+    if (!textures[30].loadFromFile("assets/grass.png", sf::IntRect(0, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[4].loadFromFile("assets/trees.png", sf::IntRect(16, 0, 16, 16)))
+
+    // Trees
+    if (!textures[40].loadFromFile("assets/trees.png", sf::IntRect(16, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[5].loadFromFile("assets/grass.png", sf::IntRect(0, 0, 16, 16)))
+    if (!textures[41].loadFromFile("assets/trees.png", sf::IntRect(32, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[6].loadFromFile("assets/towers.png", sf::IntRect(16, 16, 16, 16)))
+    if (!textures[42].loadFromFile("assets/trees.png", sf::IntRect(48, 0, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[7].loadFromFile("assets/towers.png", sf::IntRect(16, 32, 16, 16)))
+
+    // Houses
+    if (!textures[50].loadFromFile("assets/houses.png", sf::IntRect(0, 48, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[8].loadFromFile("assets/towers.png", sf::IntRect(0, 32, 16, 16)))
+    if (!textures[51].loadFromFile("assets/houses.png", sf::IntRect(16, 48, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[9].loadFromFile("assets/houses.png", sf::IntRect(16, 48, 16, 16)))
+    if (!textures[52].loadFromFile("assets/houses.png", sf::IntRect(32, 48, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[10].loadFromFile("assets/houses.png", sf::IntRect(32, 48, 16, 16)))
+
+    // Walls
+    if (!textures[60].loadFromFile("assets/towers.png", sf::IntRect(16, 16, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[11].loadFromFile("assets/trees.png", sf::IntRect(32, 0, 16, 16)))
+    if (!textures[61].loadFromFile("assets/towers.png", sf::IntRect(16, 32, 16, 16)))
         return std::map<int, sf::Texture>();
-    if (!textures[12].loadFromFile("assets/trees.png", sf::IntRect(48, 0, 16, 16)))
+    if (!textures[62].loadFromFile("assets/towers.png", sf::IntRect(0, 32, 16, 16)))
         return std::map<int, sf::Texture>();
 
     return textures;
