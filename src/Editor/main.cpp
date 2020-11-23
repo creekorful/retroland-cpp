@@ -50,7 +50,7 @@ std::map<int, sf::Texture> loadTextures()
 
 bool isBackgroundTile(int tileId)
 {
-    return tileId == 1 || tileId == 2 || tileId == 5;
+    return tileId == 1 || tileId == 2 || tileId == 5; // TODO
 }
 
 int main(int argc, char *argv[])

@@ -73,10 +73,30 @@ sf::Vector2i TileMap::size() const
 
 sf::Packet &operator<<(sf::Packet &packet, const TileMap &tileMap)
 {
-    return packet << sf::Uint32(tileMap.m_size.x) << sf::Uint32(tileMap.m_size.y);
+    // First of all send map size
+    packet << sf::Uint32(tileMap.m_size.x) << sf::Uint32(tileMap.m_size.y);
+
+    // Then tiles
+    for (int i = 0; i < tileMap.m_tileIds.at(0).size(); i++) {
+        packet << sf::Uint32(tileMap.m_tileIds.at(0).at(i)) << sf::Uint32(tileMap.m_tileIds.at(1).at(1));
+    }
+
+    return packet;
 }
 
 sf::Packet &operator>>(sf::Packet &packet, TileMap &tileMap)
 {
-    return packet >> tileMap.m_size.x >> tileMap.m_size.y;
+    // First of all receive map size
+    packet >> tileMap.m_size.x >> tileMap.m_size.y;
+
+    // Allocate vectors
+    tileMap.m_tileIds[0].resize(tileMap.m_size.x * tileMap.m_size.y);
+    tileMap.m_tileIds[1].resize(tileMap.m_size.x * tileMap.m_size.y);
+
+    // Finally read tiles
+    for (int i = 0; i < tileMap.m_tileIds.at(0).size(); i++) {
+        packet >> tileMap.m_tileIds[0][i] >> tileMap.m_tileIds[1][i];
+    }
+
+    return packet;
 }

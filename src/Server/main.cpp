@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     }
     std::cout << "new client connected" << std::endl;
 
-    TileMap tileMap(sf::Vector2i(10, 10));
+    TileMap tileMap(sf::Vector2i(5, 5));
 
     sf::Packet packet;
     packet << tileMap;
