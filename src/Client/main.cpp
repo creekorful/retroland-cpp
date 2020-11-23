@@ -49,9 +49,14 @@ std::map<int, sf::Texture> loadTextures()
 
 int main(int argc, char *argv[])
 {
+    if (argc != 2) {
+        std::cerr << "correct usage: ./Retroland_Client <serverIp>" << std::endl;
+        return 1;
+    }
+
     sf::TcpSocket socket;
-    if (socket.connect(sf::IpAddress::LocalHost, 12456) != sf::Socket::Done) {
-        std::cerr << "unable to connect to 127.0.0.1:12456" << std::endl;
+    if (socket.connect(sf::IpAddress(argv[1]), 12456) != sf::Socket::Done) {
+        std::cerr << "unable to connect to " << argv[1] << ":12456" << std::endl;
         return 1;
     }
 

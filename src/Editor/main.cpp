@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <map>
+#include <iostream>
 
 #include "../TileMap/TileMap.h"
 #include "../TileMap/TileMapRenderer.h"
@@ -55,6 +56,12 @@ bool isBackgroundTile(int tileId)
 
 int main(int argc, char *argv[])
 {
+    // Validate arguments
+    if (argc < 2) {
+        std::cerr << "correct usage: ./Retroland_Editor <saveFile> [x] [y]" << std::endl;
+        return 1;
+    }
+
     bool isBackground = true, showInventory = false;
     int currentTileId = 1;
 
@@ -67,18 +74,18 @@ int main(int argc, char *argv[])
     // Get video mode to use
     sf::VideoMode videoMode = sf::VideoMode::getFullscreenModes()[0];
 
-    // Either create a new tilemap or load from file
     TileMap tileMap;
-    if (argc == 1) {
-        // Create a new tilemap
-        tileMap = TileMap(sf::Vector2i(30, 20));
+    std::ifstream saveFile(argv[1]);
+
+    // File already exist : load from it
+    if (saveFile.good()) {
+        tileMap = TileMap(saveFile);
     } else {
-        // Load tilemap from save
-        std::ifstream saveFile(argv[1]);
-        if (saveFile.is_open())
-            tileMap = TileMap(saveFile);
-        else
+        if (argc != 4) {
+            std::cerr << "correct usage: ./Retroland_Editor <saveFile> [x] [y]" << std::endl;
             return 1;
+        }
+        tileMap = TileMap(sf::Vector2i(std::stoi(argv[2]), std::stoi(argv[3])));
     }
 
     // Create the tilemap renderer
@@ -117,10 +124,8 @@ int main(int argc, char *argv[])
                         // Save system
                     case sf::Keyboard::S:
                         if (event.key.control) {
-                            std::ofstream saveFile("save.dat");
-                            if (saveFile.is_open()) {
-                                tileMap.save(saveFile);
-                            }
+                            std::ofstream saveFile(argv[1]);
+                            tileMap.save(saveFile);
                         }
                         break;
                     default:

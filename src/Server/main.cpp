@@ -5,6 +5,16 @@
 
 int main(int argc, char *argv[])
 {
+    // Load tilemap from file
+    TileMap tileMap;
+    if (argc == 2) {
+        std::ifstream saveFile(argv[1]);
+        tileMap = TileMap(saveFile);
+    } else {
+        std::cerr << "correct usage: ./Retroland_Server <saveFile>" << std::endl;
+        return 1;
+    }
+
     sf::TcpListener listener;
     if (listener.listen(12456)) {
         std::cerr << "unable to listen to ::12456" << std::endl;
@@ -19,8 +29,6 @@ int main(int argc, char *argv[])
         return 1;
     }
     std::cout << "new client connected" << std::endl;
-
-    TileMap tileMap(sf::Vector2i(5, 5));
 
     sf::Packet packet;
     packet << tileMap;

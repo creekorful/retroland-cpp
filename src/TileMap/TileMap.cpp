@@ -78,7 +78,7 @@ sf::Packet &operator<<(sf::Packet &packet, const TileMap &tileMap)
 
     // Then tiles
     for (int i = 0; i < tileMap.m_tileIds.at(0).size(); i++) {
-        packet << sf::Uint32(tileMap.m_tileIds.at(0).at(i)) << sf::Uint32(tileMap.m_tileIds.at(1).at(1));
+        packet << sf::Uint32(tileMap.m_tileIds.at(0).at(i)) << sf::Uint32(tileMap.m_tileIds.at(1).at(i));
     }
 
     return packet;
