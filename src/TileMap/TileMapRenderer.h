@@ -13,7 +13,9 @@ public:
 
     void update(const TileMap &tileMap);
 
-    void toggleGrid();
+    void setShowGrid(bool showGrid);
+
+    bool isShowGrid() const;
 
     sf::Vector2i getTilePosition(const sf::Vector2f &worldPos) const;
 

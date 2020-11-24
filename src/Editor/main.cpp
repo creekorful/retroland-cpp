@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
 
     // Create the tilemap renderer
     TileMapRenderer tileMapRenderer(tileMap, sf::Vector2i(videoMode.width, videoMode.height), textures);
+    tileMapRenderer.setShowGrid(true); // Show grid on editor
 
     // Little GUI (current tile indicator)
     sf::RectangleShape currentTileIndicator(sf::Vector2f(200, 200));
@@ -116,7 +117,7 @@ int main(int argc, char *argv[])
                     case sf::Keyboard::Escape:
                         window.close();
                     case sf::Keyboard::X:
-                        tileMapRenderer.toggleGrid();
+                        tileMapRenderer.setShowGrid(!tileMapRenderer.isShowGrid());
                         break;
                     case sf::Keyboard::E:
                         showInventory = !showInventory;

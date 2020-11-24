@@ -2,7 +2,7 @@
 
 TileMapRenderer::TileMapRenderer(const TileMap &tileMap, const sf::Vector2i &screenSize,
                                  const std::map<int, sf::Texture> &textures)
-        : m_textures(textures)
+        : m_textures(textures), m_showGrid(false)
 {
     int tileWidth = screenSize.x / tileMap.size().x;
     int tileHeight = screenSize.y / tileMap.size().y;
@@ -32,7 +32,7 @@ TileMapRenderer::TileMapRenderer(const TileMap &tileMap, const sf::Vector2i &scr
         }
     }
 
-    toggleGrid();
+    setShowGrid(m_showGrid);
 }
 
 void TileMapRenderer::update(const TileMap &tileMap)
@@ -55,9 +55,10 @@ void TileMapRenderer::update(const TileMap &tileMap)
     }
 }
 
-void TileMapRenderer::toggleGrid()
+void TileMapRenderer::setShowGrid(bool showGrid)
 {
-    m_showGrid = !m_showGrid;
+    m_showGrid = showGrid;
+
     if (m_showGrid) {
         for (sf::RectangleShape &tile : m_tileDrawables[0]) {
             tile.setOutlineColor(sf::Color::Black);
@@ -68,6 +69,11 @@ void TileMapRenderer::toggleGrid()
             tile.setOutlineThickness(0.f);
         }
     }
+}
+
+bool TileMapRenderer::isShowGrid() const
+{
+    return m_showGrid;
 }
 
 sf::Vector2i TileMapRenderer::getTilePosition(const sf::Vector2f &worldPos) const
